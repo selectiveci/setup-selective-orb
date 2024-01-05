@@ -1,0 +1,20 @@
+description: >
+  This command sets required environment variables for Selective CI.
+parameters:
+  run_id:
+    type: string
+    description: "This should always be set to << pipeline.id >>"
+  actor:
+    type: string
+    description: "The author of the commit that triggered the build. For GitHub this is typically << pipeline.trigger_parameters.github_app.user_username >>."
+  target_branch:
+    type: string
+    default: main
+    description: "The target branch. This defaults to main."
+steps:
+  - run:
+      name: Setup Selective CI
+      command: |
+        echo "export SELECTIVE_RUN_ID=${SELECTIVE_RUN_ID:-<< parameters.run_id >>}" >> "$BASH_ENV"
+        echo "export SELECTIVE_ACTOR=${SELECTIVE_ACTOR:-<< parameters.actor >>}" >> "$BASH_ENV"
+        echo "export SELECTIVE_TARGET_BRANCH=<< parameters.target_branch >>" >> "$BASH_ENV"
