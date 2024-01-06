@@ -1,16 +1,20 @@
 description: >
   This command sets required environment variables for Selective CI.
+
+  The values are typically set to CircleCI pipeline variables. See the example above.
+
+  Other pipeline variables are documented here: https://circleci.com/docs/variables/#pipeline-values
 parameters:
   run_id:
     type: string
-    description: "This should always be set to << pipeline.id >>"
+    description: "This should always be set to"
   actor:
     type: string
-    description: "The author of the commit that triggered the build. For GitHub this is typically << pipeline.trigger_parameters.github_app.user_username >>."
+    description: "The author of the commit that triggered the build."
   target_branch:
     type: string
     default: main
-    description: "The target branch. This defaults to main."
+    description: "The branch used for creating a diff."
 steps:
   - run:
       name: Setup Selective CI

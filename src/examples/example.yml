@@ -1,13 +1,24 @@
 description: >
-  Sample example description.
-# Provide a use-case based example for using this orb.
-# Everything in the `usage` section will be displayed in the orb registry.
-# Comments are not retained.
+  This sample configuration assumes you're using Github.
+
+  Other pipeline variables are documented here: https://circleci.com/docs/variables/#pipeline-values
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
+    setup-selective: selectiveci/setup-selective@0.1.1
+  jobs:
+    test:
+      docker:
+        - image: cimg/ruby:3.2
+      steps:
+        - checkout
+        - setup-selective/init:
+            run_id: << pipeline.id >>
+            actor: << pipeline.trigger_parameters.github_app.user_username >>
+            target_branch: main
+        - run: bundle install
+        - run: bundle exec selective rspec
   workflows:
-    use-my-orb:
+    test:
       jobs:
-        - <orb-name>/<job-name>
+        - test
